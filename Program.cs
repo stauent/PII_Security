@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -83,11 +84,22 @@ namespace PII_Security
             // before being displayed.
             foreach (Customer c in myCustomers)
             {
-                Console.WriteLine($"{c.FirstName} {c.LastName}\t\tBorn:{c.DateOfBirth.ToShortDateString()}\t\tSIN:{c.SocialInsuranceNumber}\t\tSalary:{c.AnnualSalary:C0}\r\n");
+                // Displays the encrypted values as they were retrieved from the database
+                Console.WriteLine("\r\n\r\n\rn===================================================================");
                 Console.WriteLine($"Encrypted DateOfBirth:{BitConverter.ToString(c.PiiDateOfBirth)}");
                 Console.WriteLine($"Encrypted SocialInsuranceNumber:{BitConverter.ToString(c.PiiSocialInsuranceNumber)}");
                 Console.WriteLine($"Encrypted AnnualSalary:{BitConverter.ToString(c.PiiAnnualSalary)}\r\n\r\n");
 
+                // We know the names of the properties that contain decrypted data, so we can specify them by name
+                Console.WriteLine($"{c.FirstName} {c.LastName}\t\tBorn:{c.DateOfBirth.ToShortDateString()}\t\tSIN:{c.SocialInsuranceNumber}\t\tSalary:{c.AnnualSalary:C0}\r\n");
+
+                // This shows a way to use reflection to find ONLY those properties marked with the [PII] attribute.
+                // This makes it easy to find the properties containing DECRYPTED data without knowing their name in advance.
+                IEnumerable<PropertyInfo> PIIProperties = PIIAttributeHelper.EnumeratePIIProperties<Customer>(customer);
+                foreach (PropertyInfo prop in PIIProperties)
+                {
+                    Console.WriteLine($"{prop.Name}={prop.GetValue(customer)}");
+                }
             }
 
             // Delete all customers
@@ -97,6 +109,9 @@ namespace PII_Security
             }
 
             db.SaveChanges();
+
+
+
 
             Console.ReadKey();
         }
