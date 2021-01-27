@@ -92,7 +92,10 @@ namespace PII_Security
                 Console.WriteLine($"Encrypted AnnualSalary:{BitConverter.ToString(c.PiiAnnualSalary)}\r\n\r\n");
 
                 // We know the names of the properties that contain decrypted data, so we can specify them by name
-                Console.WriteLine($"{c.FirstName} {c.LastName}\t\tBorn:{c.DateOfBirth.ToShortDateString()}\t\tSIN:{c.SocialInsuranceNumber}\t\tSalary:{c.AnnualSalary:C0}\r\n");
+                Console.WriteLine($"{c.FirstName} {c.LastName}\t\t" +
+                                  $"Born:{c.DateOfBirth.ToShortDateString()}\t\t" +
+                                  $"SIN:{c.SocialInsuranceNumber}\t\t" +
+                                  $"Salary:{c.AnnualSalary:C0}\r\n");
 
                 // This shows a way to use reflection to find ONLY those properties marked with the [PII] attribute.
                 // This makes it easy to find the properties containing DECRYPTED data without knowing their name in advance.
