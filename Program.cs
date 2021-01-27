@@ -18,7 +18,7 @@ namespace PII_Security
     //  "Microsoft.EntityFrameworkCore.Tools" Version="5.0.2"
     //
     // Then to reverse engineer the database:
-    // Scaffold-DbContext -provider Microsoft.EntityFrameworkCore.SqlServer -connection "Data Source = OPTIMUS; Initial Catalog = PII_Encryption; Persist Security Info = True; User ID = ma; Password=I8well4sure;"
+    // Scaffold-DbContext -provider Microsoft.EntityFrameworkCore.SqlServer -connection "Data Source = YOUR_SQL_INSTANCE; Initial Catalog = PII_Encryption; Persist Security Info = True; User ID = YOUR_USER; Password=YOUR_PASSWORD;"
 
 
     class Program
@@ -55,7 +55,8 @@ namespace PII_Security
 
             // Write a few records into the database with encrypted data. All "PiiXXXXXXXX"
             // fields are encrypted.
-            PII_EncryptionContext db = new PII_EncryptionContext();
+            string connectionString = Configuration["PII_EncryptionConnectionString"];
+            PII_EncryptionContext db = new PII_EncryptionContext(connectionString);
             Customer customer = new Customer();
             customer.FirstName = "Bob";
             customer.LastName = "Smith";

@@ -8,8 +8,10 @@ namespace PII_Security
 {
     public partial class PII_EncryptionContext : DbContext
     {
-        public PII_EncryptionContext()
+        protected string PII_EncryptionConnectionString { get; set; }
+        public PII_EncryptionContext(string PII_EncryptionConnectionString)
         {
+            this.PII_EncryptionConnectionString = PII_EncryptionConnectionString;
         }
 
         public PII_EncryptionContext(DbContextOptions<PII_EncryptionContext> options)
@@ -23,8 +25,7 @@ namespace PII_Security
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source = OPTIMUS; Initial Catalog = PII_Encryption; Persist Security Info = True; User ID = ma; Password=I8well4sure;");
+                optionsBuilder.UseSqlServer(PII_EncryptionConnectionString);
             }
         }
 
